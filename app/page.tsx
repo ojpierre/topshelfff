@@ -1,7 +1,14 @@
-import React from "react";
+import { Hero } from "@/components/hero";
+import { ProductList } from "@/components/product-list";
+import { getProducts } from "@/lib/products";
 
-const page = () => {
-  return <div>Hello, World my name is Peter</div>;
-};
+export default async function Page() {
+  const products = await getProducts();
 
-export default page;
+  return (
+    <div className="mx-auto flex max-w-screen-xl flex-col gap-8 px-4">
+      <Hero />
+      <ProductList list={products} />
+    </div>
+  );
+}
