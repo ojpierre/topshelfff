@@ -4,11 +4,11 @@ import Stripe from 'stripe'
 
 export async function getProducts(
   options: Pick<Stripe.ProductListParams, 'limit'> = {
-    limit: 6,
+    limit: 100, // Increased limit to fetch more products
   }
 ) {
   const products = await stripe.products.list({
-    limit: options.limit,
+    ...options,
     active: true,
     expand: ['data.default_price'],
   })

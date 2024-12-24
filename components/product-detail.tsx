@@ -1,14 +1,11 @@
-"use client";
-
 import { ProductBuyForm } from "@/components/product-buy-form";
 import { productSchema } from "@/lib/schema";
 import Image from "next/image";
 import { z } from "zod";
 import { ImageIcon } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 
-export function ProductListThumbnail({
+export function ProductDetail({
   product,
 }: {
   product: z.infer<typeof productSchema>;
@@ -16,15 +13,15 @@ export function ProductListThumbnail({
   const [imageError, setImageError] = useState(false);
 
   return (
-    <div className="bg-background">
-      <Link href={`/product/${product.id}`} className="block">
+    <div className="bg-background flex flex-col md:flex-row gap-8">
+      <div className="w-full md:w-1/2">
         <div className="ring-border relative aspect-square overflow-hidden rounded-xl ring-1">
           {product.images?.[0] && !imageError ? (
             <Image
               src={product.images[0]}
               alt={product.name}
-              width={400}
-              height={400}
+              width={600}
+              height={600}
               className="size-full object-cover"
               onError={() => setImageError(true)}
             />
@@ -34,22 +31,15 @@ export function ProductListThumbnail({
             </div>
           )}
         </div>
-      </Link>
-      <div className="flex items-center gap-2 py-2">
-        <div className="flex flex-col gap-1">
-          <div className="font-medium">{product.name}</div>
-          <div className="text-muted-foreground">
-            {product.price.display_amount}
-          </div>
+      </div>
+      <div className="w-full md:w-1/2">
+        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+        <p className="text-muted-foreground mb-4">{product.description}</p>
+        <div className="text-2xl font-bold mb-6">
+          {product.price.display_amount}
         </div>
-        <div className="ml-auto">
-          <ProductBuyForm priceId={product.price.id} />
-        </div>
+        <ProductBuyForm priceId={product.price.id} />
       </div>
     </div>
   );
-}
-
-export function ProductListThumbnailSkeleton() {
-  return <div className="bg-muted aspect-square rounded-xl" />;
 }
